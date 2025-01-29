@@ -1,0 +1,44 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!-- Pages/Index.cshtml -->
+<div class="container mt-5">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Welcome, [Employee Name]!</h2>
+            <div class="mt-4">
+                <a href="/LogTicket" class="btn btn-primary me-2">Log a New Ticket</a>
+                <a href="/ViewTickets" class="btn btn-secondary">View My Tickets</a>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Recent Tickets</h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @* @foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td>@ticket.Id</td>
+                            <td>@ticket.Title</td>
+                            <td><span class="badge bg-success">@ticket.Status</span></td>
+                            <td>@ticket.CreatedDate.ToShortDateString()</td>
+                        </tr>
+                    } *@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
