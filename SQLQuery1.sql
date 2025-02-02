@@ -8,4 +8,4 @@
     CreatedBy NVARCHAR(255)
 );
 
-select * from Users;
+select * from Tickets;
