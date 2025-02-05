@@ -1,4 +1,5 @@
 using EmpDash.Pages.Data;
+using EmpDash.Pages.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +20,13 @@ namespace EmpDash.Pages
 
         [BindProperty]
         public string Username { get; set; }
+        public List<Tickets> Tickets { get; set; } = new List<Tickets>(); // Change from a single object to a list
 
-     
+
 
         public async Task<IActionResult> OnGet()
         {
+
             try
             {
                 string userEmail = HttpContext.Session.GetString("UserEmail");
@@ -39,6 +42,13 @@ namespace EmpDash.Pages
                     Username = user.FirstName;
                    
                 }
+
+                //diplay the ticket created by the user
+                Tickets = await _context.tickets
+                  .Where(t => t.CreatedBy == userEmail)
+                  .OrderByDescending(t => t.CreatedDate) // Sort by latest tickets first
+                  .ToListAsync();
+
                 return Page();
 
             }

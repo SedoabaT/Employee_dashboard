@@ -28,7 +28,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @* @foreach (var ticket in Model.Tickets)
+                    @foreach (var ticket in Model.Tickets)
                     {
                         <tr>
                             <td>@ticket.Id</td>
@@ -36,7 +36,7 @@
                             <td><span class="badge bg-success">@ticket.Status</span></td>
                             <td>@ticket.CreatedDate.ToShortDateString()</td>
                         </tr>
-                    } *@
+                    }
                 </tbody>
             </table>
         </div>

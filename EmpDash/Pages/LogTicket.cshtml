@@ -24,3 +24,30 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+<div id="snackbar" class="snackbar">Ticket successfully logged!</div>
+
+<script>
+    function showSnackbar() {
+        var snackbar = document.getElementById("snackbar");
+        snackbar.classList.add("show");
+        setTimeout(function () {
+            snackbar.classList.remove("show");
+        }, 3000);
+    }
+
+    // Call showSnackbar() when the form is successfully submitted
+    document.querySelector("form").addEventListener("submit", function (event) {
+        showSnackbar();
+    });
+</script>
+
+@if (TempData["ShowSnackbar"] != null && (bool)TempData["ShowSnackbar"])
+{
+    <script>
+        window.onload = function () {
+            showSnackbar();
+        };
+    </script>
+}
+
