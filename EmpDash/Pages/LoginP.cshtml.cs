@@ -40,6 +40,7 @@ namespace EmpDash.Pages
                 }
 
                 HttpContext.Session.SetString("UserEmail", user.Email);
+                Console.WriteLine($"User session set: {user.Email}");
                 return RedirectToPage("/Index");
             }
             catch (Exception ex)
