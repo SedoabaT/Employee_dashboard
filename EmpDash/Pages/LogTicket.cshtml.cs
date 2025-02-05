@@ -25,12 +25,7 @@ namespace EmpDash.Pages
 
         public void OnGet()
         {
-            // Initialize default values for the ticket (optional)
-            //Ticket = new Tickets
-            //{
-            //    CreatedDate = DateTime.Now,
-            //    Status = "Open"
-            //};
+           
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -73,6 +68,7 @@ namespace EmpDash.Pages
 
             try
             {
+                // Set default values before saving
                 Ticket.CreatedDate = DateTime.Now;
                 Ticket.Status = "Open";
 
@@ -80,7 +76,9 @@ namespace EmpDash.Pages
                 _context.tickets.Add(Ticket);
                 await _context.SaveChangesAsync();
 
-                return RedirectToPage("/Index");
+                TempData["ShowSnackbar"] = true;  // Store snackbar flag
+
+                return RedirectToPage("/LogTicket");
             }
             catch (Exception ex)
             {
