@@ -3,22 +3,34 @@ using EmpDash.Pages.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace EmpDash.Pages
 {
     public class LogTicketModel : PageModel
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<LogTicketModel> _logger;
 
-        public LogTicketModel(AppDbContext context)
+        public LogTicketModel(AppDbContext context, ILogger<LogTicketModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
         public Tickets Ticket { get; set; }
+
         public void OnGet()
         {
+            // Initialize default values for the ticket (optional)
+            //Ticket = new Tickets
+            //{
+            //    CreatedDate = DateTime.Now,
+            //    Status = "Open"
+            //};
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -29,12 +41,23 @@ namespace EmpDash.Pages
             string userEmail = HttpContext.Session.GetString("UserEmail");
             Console.WriteLine($"Retrieved UserEmail from session: {userEmail}");
 
-            Ticket.CreatedBy = userEmail;  // Assign the session value
+            // Ensure Ticket is initialized before setting properties
+            if (Ticket == null)
+            {
+                Ticket = new Tickets();
+            }
+
+            Ticket.CreatedBy = userEmail;  // Assign the session value to CreatedBy
 
             if (string.IsNullOrEmpty(Ticket.CreatedBy))
             {
                 Console.WriteLine("Session UserEmail is null or empty.");
             }
+
+            // Ensure CreatedBy is set before validation
+            ModelState.Clear();
+            TryValidateModel(Ticket);
+
             if (!ModelState.IsValid)
             {
                 Console.WriteLine("ModelState is invalid. Errors:");
@@ -50,16 +73,6 @@ namespace EmpDash.Pages
 
             try
             {
-                Console.WriteLine($"Checking for existing ticket: {Ticket.Title}");
-
-                var existingTicket = await _context.tickets.FirstOrDefaultAsync(t => t.Title == Ticket.Title);
-                if (existingTicket != null)
-                {
-                    Console.WriteLine("Ticket already exists.");
-                    ModelState.AddModelError("Ticket.Title", "Ticket already exists.");
-                    return Page();
-                }
-                // Set the CreatedDate and Status before saving
                 Ticket.CreatedDate = DateTime.Now;
                 Ticket.Status = "Open";
 
@@ -76,5 +89,6 @@ namespace EmpDash.Pages
                 return Page();
             }
         }
+
     }
 }
