@@ -1,4 +1,36 @@
 ﻿@page
 @model EmpDash.Pages.ViewTicketsModel
 @{
+    ViewData["Title"] = "View Tickets";
 }
+
+
+
+<div class="container mt-5">
+    <h2>View Tickets</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model.Tickets)
+            {
+                <tr>
+                    <td>@ticket.Id</td>
+                    <td>@ticket.Title</td>
+                    <td><span class="badge bg-success">@ticket.Status</span></td>
+                    <td>@ticket.CreatedDate.ToShortDateString()</td>
+                    <td>
+                        <a href="/TicketDetails?id=@ticket.Id" class="btn btn-sm btn-primary">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
